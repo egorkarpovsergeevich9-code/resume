@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Карпов Егор — Аналитик данных</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@300..900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --text-xs:clamp(.75rem,.7rem + .25vw,.875rem);
+  --text-sm:clamp(.875rem,.8rem + .35vw,1rem);
+  --text-base:clamp(1rem,.95rem + .25vw,1.125rem);
+  --text-lg:clamp(1.125rem,1rem + .75vw,1.5rem);
+  --text-xl:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);
+  --text-2xl:clamp(2rem,1.2rem + 2.5vw,3.5rem);
+  --text-hero:clamp(3rem,1.5rem + 5vw,6rem);
+  --sp1:.25rem;--sp2:.5rem;--sp3:.75rem;--sp4:1rem;--sp5:1.25rem;
+  --sp6:1.5rem;--sp7:1.75rem;--sp8:2rem;--sp10:2.5rem;--sp12:3rem;--sp16:4rem;
+  --r-sm:.375rem;--r-md:.5rem;--r-lg:.75rem;--r-xl:1rem;--r-2xl:1.5rem;--r-full:9999px;
+  --tr:200ms cubic-bezier(.16,1,.3,1);
+  --font-body:'Onest',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+}
+[data-theme="dark"]{
+  --bg:#0a0a0c;--surf:#111113;--surf2:#171719;--surf3:#1e1e21;--surf4:#28282c;
+  --bdr:rgba(255,255,255,.07);--bdr2:rgba(255,255,255,.13);--bdr3:rgba(255,255,255,.22);
+  --tx:#ebebed;--txm:#888892;--txf:#44444e;--txi:#0a0a0c;
+  --ac:#3cc8dc;--acg:rgba(60,200,220,.11);--acd:rgba(60,200,220,.07);--ach:rgba(60,200,220,.25);
+  --ac2:#5b8dee;--ac2g:rgba(91,141,238,.1);
+  --gold:#d4a843;--goldg:rgba(212,168,67,.11);
+  --grn:#52b852;--grng:rgba(82,184,82,.1);
+  --sh-sm:0 1px 3px rgba(0,0,0,.45);--sh-md:0 4px 20px rgba(0,0,0,.55);--sh-lg:0 12px 44px rgba(0,0,0,.7);
+}
+[data-theme="light"]{
+  --bg:#f2efe9;--surf:#faf8f4;--surf2:#fff;--surf3:#edeae3;--surf4:#e4e0d8;
+  --bdr:rgba(50,40,20,.09);--bdr2:rgba(50,40,20,.17);--bdr3:rgba(50,40,20,.27);
+  --tx:#19160e;--txm:#5e5649;--txf:#a09880;--txi:#fff;
+  --ac:#0a7a83;--acg:rgba(10,122,131,.08);--acd:rgba(10,122,131,.06);--ach:rgba(10,122,131,.2);
+  --ac2:#2a5fcc;--ac2g:rgba(42,95,204,.08);
+  --gold:#a07010;--goldg:rgba(160,112,16,.1);
+  --grn:#2a7a2a;--grng:rgba(42,122,42,.08);
+  --sh-sm:0 1px 4px rgba(50,40,20,.07);--sh-md:0 4px 20px rgba(50,40,20,.1);--sh-lg:0 12px 44px rgba(50,40,20,.14);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;scroll-padding-top:64px;}
+body{font-family:var(--font-body);font-size:var(--text-base);color:var(--tx);background:var(--bg);min-height:100dvh;-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background .35s,color .35s;}
+a{color:inherit;text-decoration:none;}
+button{cursor:pointer;border:none;background:none;font:inherit;color:inherit;}
+img,svg{display:block;max-width:100%;}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--surf4);border-radius:99px;}
+#npb{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--ac),var(--ac2));z-index:999;width:0;transition:width .08s linear;pointer-events:none;box-shadow:0 0 10px var(--ach);}
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 var(--sp8);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--bdr);}
+[data-theme="dark"] .nav{background:rgba(10,10,12,.85);}
+[data-theme="light"] .nav{background:rgba(242,239,233,.90);}
+.nav-logo{display:flex;align-items:center;gap:var(--sp2);font-weight:900;font-size:var(--text-sm);letter-spacing:-.02em;cursor:pointer;}
+.logo-box{width:32px;height:32px;border-radius:8px;background:var(--ac);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:.78rem;flex-shrink:0;}
+.nav-links{display:flex;gap:var(--sp5);}
+.nav-links a{font-size:var(--text-xs);color:var(--txm);transition:color var(--tr);font-weight:600;letter-spacing:.01em;position:relative;}
+.nav-links a::after{content:"";position:absolute;bottom:-4px;left:0;right:0;height:1px;background:var(--ac);transform:scaleX(0);transition:transform var(--tr);transform-origin:left;}
+.nav-links a:hover,.nav-links a.act{color:var(--tx);}
+.nav-links a.act::after{transform:scaleX(1);}
+.ico-btn{width:34px;height:34px;border-radius:99px;display:flex;align-items:center;justify-content:center;background:var(--surf2);border:1px solid var(--bdr);transition:all var(--tr);}
+.ico-btn:hover{border-color:var(--ac);color:var(--ac);}
+.cta-nav{padding:8px 20px;background:var(--ac);color:#fff;border-radius:99px;font-size:var(--text-xs);font-weight:700;transition:all var(--tr);}
+.cta-nav:hover{opacity:.85;transform:translateY(-1px);}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:60px clamp(var(--sp8),6vw,100px) var(--sp10);position:relative;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;pointer-events:none;}
+.bg-dots{position:absolute;inset:0;background-image:radial-gradient(circle,var(--bdr2) 1px,transparent 1px);background-size:32px 32px;}
+.hero-glow1{position:absolute;top:-15%;left:-10%;width:80vw;height:80vw;max-width:900px;max-height:900px;border-radius:50%;background:radial-gradient(circle,var(--acg),transparent 60%);animation:pulse-slow 8s ease-in-out infinite alternate;}
+.hero-glow2{position:absolute;bottom:-10%;right:-5%;width:60vw;height:60vw;max-width:700px;max-height:700px;border-radius:50%;background:radial-gradient(circle,var(--ac2g),transparent 60%);animation:pulse-slow 10s ease-in-out infinite alternate-reverse;}
+@keyframes pulse-slow{0%{transform:scale(1);}100%{transform:scale(1.15) translate(2%,2%);}}
+.hero-c{position:relative;z-index:1;width:100%;max-width:1120px;}
+.hero-eyebrow{display:flex;align-items:center;gap:var(--sp3);margin-bottom:var(--sp6);}
+.h-dot{width:8px;height:8px;border-radius:50%;background:var(--ac);animation:blink 2s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+.h-ey{font-size:var(--text-xs);color:var(--ac);font-family:var(--font-mono);letter-spacing:.1em;text-transform:uppercase;}
+h1.hero-name{font-size:var(--text-hero);font-weight:900;line-height:.9;letter-spacing:-.05em;margin-bottom:var(--sp3);}
+.hn-1{display:block;color:var(--tx);}
+.hn-2{display:block;background:linear-gradient(135deg,var(--ac) 0%,var(--ac2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-role{font-size:var(--text-lg);color:var(--txm);font-weight:400;margin-bottom:var(--sp4);max-width:680px;line-height:1.35;}
+.hero-meta{display:flex;gap:var(--sp3);flex-wrap:wrap;margin-bottom:var(--sp4);}
+.hm{display:flex;align-items:center;gap:var(--sp2);padding:7px 16px;background:var(--surf2);border:1px solid var(--bdr);border-radius:99px;font-size:var(--text-xs);}
+.hm-val{font-weight:700;font-family:var(--font-mono);}
+.stats-bento{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;border-radius:var(--r-2xl);overflow:hidden;border:1px solid var(--bdr);margin-bottom:var(--sp5);}
+.sbc{background:var(--surf);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:var(--sp4) var(--sp4);text-align:center;position:relative;overflow:hidden;transition:background var(--tr);}
+.sbc:hover{background:var(--surf3);}
+.sbc::before{content:"";position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,var(--acg),transparent 70%);pointer-events:none;}
+.sbc-num{font-size:clamp(2.2rem,4vw,3.8rem);font-weight:900;font-family:var(--font-mono);line-height:1;color:var(--tx);letter-spacing:-.04em;display:flex;align-items:baseline;gap:2px;}
+.sbc-num .plus{font-size:60%;color:var(--ac);margin-left:1px;}
+.sbc-label{font-size:var(--text-xs);color:var(--txm);margin-top:6px;font-family:var(--font-mono);letter-spacing:.05em;}
+.sbc-icon{font-size:1.1rem;margin-bottom:6px;}
+.hero-btns{display:flex;gap:var(--sp3);flex-wrap:wrap;}
+.btn-prim{padding:13px 32px;background:var(--ac);color:#fff;border-radius:99px;font-size:var(--text-sm);font-weight:700;transition:all var(--tr);box-shadow:0 0 28px var(--acg);}
+.btn-prim:hover{transform:translateY(-2px);box-shadow:0 0 48px var(--ach);}
+.btn-sec{padding:13px 24px;border:1px solid var(--bdr2);border-radius:99px;font-size:var(--text-sm);font-weight:600;transition:all var(--tr);}
+.btn-sec:hover{border-color:var(--ac);color:var(--ac);}
+.sec{padding:clamp(var(--sp16),7vw,120px) var(--sp8);}
+.wrap{max-width:1120px;margin:0 auto;}
+.sec-ey{display:flex;align-items:center;gap:var(--sp2);font-size:var(--text-xs);color:var(--ac);font-family:var(--font-mono);letter-spacing:.1em;text-transform:uppercase;margin-bottom:var(--sp3);}
+.sec-ey::before{content:"";width:20px;height:1px;background:var(--ac);}
+.sec-title{font-size:var(--text-2xl);font-weight:900;letter-spacing:-.03em;line-height:1.08;margin-bottom:var(--sp10);}
+.sec-title em{font-style:normal;color:var(--ac);}
+hr.sep{border:none;border-top:1px solid var(--bdr);max-width:1120px;margin:0 auto;}
+.wcard{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r-2xl);overflow:hidden;transition:border-color var(--tr),box-shadow var(--tr);margin-bottom:var(--sp3);}
+.wcard:hover{border-color:var(--bdr2);box-shadow:var(--sh-md);}
+.wcard-head{display:grid;grid-template-columns:auto 1fr auto;gap:var(--sp4);align-items:center;padding:var(--sp6) var(--sp8);cursor:pointer;user-select:none;}
+.wco-logo{width:50px;height:50px;border-radius:var(--r-lg);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;border:1px solid var(--bdr);}
+.wco-logo.alfa{background:rgba(239,52,52,.08);border-color:rgba(239,52,52,.15);}
+.wco-logo.river{background:rgba(60,200,220,.07);border-color:rgba(60,200,220,.12);}
+.wco-title{font-size:var(--text-base);font-weight:800;margin-bottom:3px;}
+.wco-meta{display:flex;gap:var(--sp3);flex-wrap:wrap;}
+.wco-co{font-size:var(--text-sm);color:var(--ac);font-family:var(--font-mono);}
+.wco-period,.wco-loc{font-size:var(--text-xs);color:var(--txm);font-family:var(--font-mono);}
+.wtoggle{width:30px;height:30px;border-radius:99px;border:1px solid var(--bdr);display:flex;align-items:center;justify-content:center;color:var(--txm);transition:all var(--tr);flex-shrink:0;}
+.wcard.open .wtoggle{transform:rotate(180deg);border-color:var(--ac);color:var(--ac);}
+.wcard-body{display:none;padding:0 var(--sp8) var(--sp8);}
+.wcard.open .wcard-body{display:block;}
+.wsep{height:1px;background:var(--bdr);margin-bottom:var(--sp6);}
+.wtasks{display:flex;flex-direction:column;gap:var(--sp3);}
+.wtask{display:flex;gap:var(--sp3);align-items:flex-start;}
+.wdot{width:20px;height:20px;border-radius:99px;background:var(--acd);border:1px solid rgba(60,200,220,.18);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.wdot svg{width:9px;height:9px;stroke:var(--ac);}
+.wtask p{font-size:var(--text-sm);color:var(--txm);line-height:1.7;}
+.wtask p strong{color:var(--tx);}
+.wbadges{display:flex;flex-wrap:wrap;gap:var(--sp2);margin-top:var(--sp5);}
+.wbadge{padding:4px 10px;background:var(--surf2);border:1px solid var(--bdr);border-radius:99px;font-size:var(--text-xs);color:var(--txm);font-family:var(--font-mono);}
+.hgrid{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp5);}
+.hcard{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r-2xl);padding:var(--sp8);position:relative;overflow:hidden;transition:transform var(--tr),border-color var(--tr),box-shadow var(--tr);}
+.hcard::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 90% 5%,var(--acg),transparent 55%);opacity:0;transition:opacity .35s;}
+.hcard:hover{transform:translateY(-4px);border-color:rgba(60,200,220,.28);box-shadow:var(--sh-lg);}
+.hcard:hover::before{opacity:1;}
+.hcard-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:var(--sp6);}
+.hico{width:52px;height:52px;border-radius:var(--r-lg);background:var(--surf2);border:1px solid var(--bdr);display:flex;align-items:center;justify-content:center;font-size:1.5rem;}
+.badge-tag{padding:5px 12px;border-radius:99px;font-size:var(--text-xs);font-weight:700;font-family:var(--font-mono);letter-spacing:.04em;}
+.bt-gold{background:var(--goldg);color:var(--gold);border:1px solid rgba(212,168,67,.28);}
+.bt-green{background:var(--grng);color:var(--grn);border:1px solid rgba(82,184,82,.22);}
+.bt-vak{background:rgba(91,141,238,.1);color:var(--ac2);border:1px solid rgba(91,141,238,.25);}
+.hco{font-size:var(--text-xs);color:var(--txm);font-family:var(--font-mono);letter-spacing:.04em;margin-bottom:4px;}
+.htitle{font-size:var(--text-lg);font-weight:800;line-height:1.2;margin-bottom:var(--sp4);}
+.hdesc{font-size:var(--text-sm);color:var(--txm);line-height:1.75;margin-bottom:var(--sp3);}
+.himpact{background:var(--surf2);border:1px solid var(--bdr);border-radius:var(--r-xl);padding:var(--sp4) var(--sp5);margin-bottom:var(--sp5);display:flex;align-items:center;gap:var(--sp3);}
+.himpact-ico{color:var(--ac);flex-shrink:0;}
+.himpact-text{font-size:var(--text-sm);color:var(--tx);line-height:1.5;}
+.himpact-text strong{color:var(--ac);}
+.hmetrics{display:flex;gap:var(--sp3);flex-wrap:wrap;}.hrepo{display:inline-flex;align-items:center;gap:8px;margin-top:16px;padding:8px 18px;background:var(--surf2);border:1px solid var(--bdr2);border-radius:99px;font-size:var(--text-xs);font-family:var(--font-mono);color:var(--ac);transition:all var(--tr);} .hrepo:hover{border-color:var(--ac);color:var(--ac);transform:translateY(-1px);} 
+.hmet{background:var(--surf2);border:1px solid var(--bdr);border-radius:var(--r-lg);padding:var(--sp3) var(--sp4);}
+.hmv{font-size:var(--text-base);font-weight:800;color:var(--ac);font-family:var(--font-mono);}
+.hmk{font-size:var(--text-xs);color:var(--txf);margin-top:2px;}
+.tabs-row{display:flex;gap:var(--sp2);margin-bottom:var(--sp8);background:var(--surf);padding:var(--sp2);border-radius:var(--r-xl);border:1px solid var(--bdr);width:fit-content;}
+.tb{padding:8px 20px;border-radius:var(--r-lg);font-size:var(--text-sm);color:var(--txm);font-weight:600;transition:all var(--tr);}
+.tb.on{background:var(--surf3);color:var(--tx);}
+.tp{display:none;}
+.tp.on{display:block;}
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp5);}
+.pcard{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r-2xl);padding:var(--sp7);transition:all var(--tr);position:relative;overflow:hidden;display:flex;flex-direction:column;}
+.pcard:hover{border-color:var(--bdr2);transform:translateY(-2px);box-shadow:var(--sh-md);}
+.pcard::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 90% 10%,var(--acg),transparent 60%);opacity:0;transition:opacity .35s;pointer-events:none;}
+.pcard:hover::after{opacity:1;}
+.pcard-top{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--sp3);margin-bottom:var(--sp4);}
+.pico{width:44px;height:44px;border-radius:var(--r-lg);background:var(--acd);border:1px solid rgba(60,200,220,.14);display:flex;align-items:center;justify-content:center;font-size:1.25rem;flex-shrink:0;}
+.ptag-sm{font-size:var(--text-xs);color:var(--txf);font-family:var(--font-mono);text-align:right;line-height:1.4;}
+.pt{font-size:var(--text-base);font-weight:800;margin-bottom:var(--sp3);}
+.pd{font-size:var(--text-sm);color:var(--txm);line-height:1.7;margin-bottom:var(--sp5);flex:1;}
+.p-impact{background:var(--surf2);border:1px solid var(--bdr);border-radius:var(--r-xl);padding:var(--sp4) var(--sp5);margin-bottom:var(--sp4);}
+.p-impact-label{font-size:var(--text-xs);color:var(--ac);font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;}
+.p-impact-text{font-size:var(--text-sm);color:var(--tx);line-height:1.55;}
+.p-impact-text strong{color:var(--ac);}
+.kpis{display:flex;flex-wrap:wrap;gap:var(--sp2);}
+.kp{background:var(--surf3);border-radius:var(--r-md);padding:3px 9px;font-size:var(--text-xs);color:var(--txm);font-family:var(--font-mono);}
+.kp strong{color:var(--tx);}
+.fcard{background:var(--surf);border:1px solid rgba(60,200,220,.22);border-radius:var(--r-2xl);padding:var(--sp10);position:relative;overflow:hidden;}
+.fcard::after{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--ac) 40%,var(--ac2) 60%,transparent);animation:scanline 3s ease-in-out infinite;}
+@keyframes scanline{0%,100%{opacity:.18;}50%{opacity:1;}}
+.f-hd{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:var(--sp3);margin-bottom:var(--sp6);}
+.live-pill{display:flex;align-items:center;gap:var(--sp2);padding:6px 14px;background:rgba(60,200,220,.09);border:1px solid rgba(60,200,220,.22);border-radius:99px;font-size:var(--text-xs);font-family:var(--font-mono);color:var(--ac);}
+.ldot{width:6px;height:6px;border-radius:50%;background:var(--ac);animation:blink 1.5s infinite;}
+.f-title{font-size:var(--text-xl);font-weight:900;max-width:760px;line-height:1.18;margin-bottom:var(--sp3);}
+.f-intro{background:var(--surf2);border:1px solid var(--bdr);border-radius:var(--r-xl);padding:var(--sp5) var(--sp6);margin-bottom:var(--sp8);display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--sp5);}
+.f-il{font-size:var(--text-xs);color:var(--txf);font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;}
+.f-iv{font-size:var(--text-sm);font-weight:700;color:var(--tx);}
+.f-sub{font-size:var(--text-sm);color:var(--txm);max-width:860px;line-height:1.75;margin-bottom:var(--sp8);}
+.ch-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp4);}
+.ch{background:var(--surf2);border:1px solid var(--bdr);border-radius:var(--r-xl);padding:var(--sp6);transition:all var(--tr);}
+.ch:hover{border-color:rgba(60,200,220,.28);background:var(--surf3);}
+.ch-n{font-size:var(--text-xs);color:var(--ac);font-family:var(--font-mono);margin-bottom:var(--sp2);font-weight:700;}
+.ch-t{font-size:var(--text-sm);font-weight:800;margin-bottom:var(--sp3);}
+.ch-list{list-style:none;display:flex;flex-direction:column;gap:5px;}
+.ch-list li{font-size:var(--text-xs);color:var(--txm);display:flex;gap:var(--sp2);line-height:1.55;}
+.ch-list li::before{content:">";color:var(--ac);flex-shrink:0;}
+.f-tags{margin-top:var(--sp6);display:flex;flex-wrap:wrap;gap:var(--sp2);}
+.f-tag{padding:5px 12px;background:var(--surf2);border:1px solid var(--bdr);border-radius:99px;font-size:var(--text-xs);font-family:var(--font-mono);color:var(--txm);}
+.sk-wrap{display:grid;grid-template-columns:1.15fr 1fr;gap:var(--sp10);align-items:start;}
+.sk-g{margin-bottom:var(--sp7);}
+.sk-gt{font-size:var(--text-xs);color:var(--ac);font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.1em;margin-bottom:var(--sp4);display:flex;align-items:center;gap:var(--sp2);}
+.sk-gt::after{content:"";flex:1;height:1px;background:var(--bdr);}
+.sk-tags{display:flex;flex-wrap:wrap;gap:var(--sp2);}
+.sk-tag{padding:7px 14px;background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r-xl);font-size:var(--text-sm);color:var(--txm);font-family:var(--font-mono);transition:all var(--tr);}
+.sk-tag:hover{border-color:var(--ac);color:var(--ac);background:var(--acd);}
+.not-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp4);}
+.not-card{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r-xl);padding:var(--sp5);transition:all var(--tr);}
+.not-card:hover{border-color:var(--ac);transform:translateY(-2px);box-shadow:var(--sh-sm);}
+.not-notation{font-family:var(--font-mono);font-weight:800;font-size:var(--text-base);color:var(--ac);margin-bottom:4px;}
+.not-tool{font-size:var(--text-sm);color:var(--txm);}
+.not-tool strong{color:var(--tx);font-family:var(--font-mono);}
+.not-extra{margin-top:var(--sp4);padding:var(--sp3) var(--sp4);background:var(--surf2);border:1px solid var(--bdr);border-radius:var(--r-lg);font-size:var(--text-xs);color:var(--txf);font-family:var(--font-mono);}
+.edu-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp8);align-items:start;}
+.edu-main{background:var(--surf);border:1px solid rgba(60,200,220,.2);border-radius:var(--r-2xl);padding:var(--sp8);position:relative;overflow:hidden;}
+.edu-main::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--ac),var(--ac2),transparent);}
+.edu-uni{font-size:var(--text-xs);color:var(--ac);font-family:var(--font-mono);margin-bottom:var(--sp2);}
+.edu-name{font-size:var(--text-lg);font-weight:900;margin-bottom:var(--sp2);line-height:1.25;}
+.edu-spec{font-size:var(--text-sm);color:var(--txm);margin-bottom:var(--sp6);}
+.edu-row{display:flex;gap:var(--sp3);flex-wrap:wrap;margin-bottom:var(--sp4);}
+.ep{padding:5px 12px;border-radius:99px;font-size:var(--text-xs);font-family:var(--font-mono);font-weight:600;}
+.ep-green{background:var(--grng);color:var(--grn);border:1px solid rgba(82,184,82,.2);}
+.ep-blue{background:var(--acd);color:var(--ac);border:1px solid rgba(60,200,220,.15);}
+.cert-card{background:var(--surf);border:1px solid rgba(212,168,67,.2);border-radius:var(--r-2xl);padding:var(--sp6);margin-top:var(--sp5);display:flex;gap:var(--sp4);align-items:flex-start;}
+.cert-ico{width:50px;height:50px;border-radius:var(--r-xl);background:var(--goldg);border:1px solid rgba(212,168,67,.25);display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0;}
+.cert-title{font-size:var(--text-base);font-weight:800;margin-bottom:var(--sp2);}
+.cert-desc{font-size:var(--text-sm);color:var(--txm);line-height:1.55;}
+.olymp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp3);margin-top:var(--sp5);}
+.olymp{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r-xl);padding:var(--sp5);text-align:center;transition:all var(--tr);cursor:default;position:relative;overflow:hidden;}
+.olymp::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 100%,var(--acg),transparent 65%);opacity:0;transition:opacity .3s;}
+.olymp:hover{border-color:rgba(60,200,220,.3);transform:translateY(-3px);}
+.olymp:hover::before{opacity:1;}
+.olymp-ico{font-size:1.6rem;margin-bottom:var(--sp2);}
+.olymp-prog{font-size:var(--text-xs);color:var(--ac);font-family:var(--font-mono);margin-bottom:var(--sp1);}
+.olymp-name{font-size:var(--text-xs);font-weight:700;margin-bottom:var(--sp2);line-height:1.3;}
+.olymp-res{font-size:var(--text-xs);padding:3px 10px;background:var(--acd);border-radius:99px;color:var(--ac);font-family:var(--font-mono);display:inline-block;}
+.courses-list{display:flex;flex-direction:column;gap:var(--sp3);}
+.crs{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r-xl);padding:var(--sp4) var(--sp5);display:flex;align-items:center;gap:var(--sp4);transition:all var(--tr);}
+.crs:hover{border-color:var(--bdr2);transform:translateX(4px);}
+.crs-ico{width:34px;height:34px;border-radius:var(--r-md);background:var(--acd);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0;}
+.crs-name{font-size:var(--text-sm);font-weight:700;margin-bottom:2px;}
+.crs-src{font-size:var(--text-xs);color:var(--txm);font-family:var(--font-mono);}
+.crs-yr{font-size:var(--text-xs);color:var(--txf);font-family:var(--font-mono);margin-left:auto;flex-shrink:0;}
+.pub-grid{display:flex;flex-direction:column;gap:var(--sp5);}
+.pubcard{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r-2xl);padding:var(--sp8);position:relative;overflow:hidden;transition:all var(--tr);}
+.pubcard:hover{border-color:var(--bdr2);box-shadow:var(--sh-md);}
+.pubcard::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;background:var(--ac);}
+.pub-top{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--sp4);margin-bottom:var(--sp3);}
+.pub-ico{width:54px;height:54px;border-radius:var(--r-xl);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;border:1px solid var(--bdr);}
+.pub-ico.rinc{background:rgba(60,200,220,.07);border-color:rgba(60,200,220,.15);}
+.pub-ico.intl{background:rgba(212,168,67,.07);border-color:rgba(212,168,67,.17);}
+.pub-badges{display:flex;flex-wrap:wrap;gap:var(--sp2);}
+.pub-title{font-size:var(--text-base);font-weight:800;line-height:1.35;margin-bottom:var(--sp4);}
+.pub-rows{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp5);margin-bottom:var(--sp3);}
+.pub-bl{font-size:var(--text-xs);color:var(--txf);font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.07em;margin-bottom:var(--sp2);}
+.pub-bt{font-size:var(--text-sm);color:var(--txm);line-height:1.65;}
+.pub-bt b{color:var(--tx);}
+.pub-results{display:flex;flex-wrap:wrap;gap:var(--sp2);}
+.pub-res{background:var(--surf2);border:1px solid var(--bdr);border-radius:var(--r-lg);padding:var(--sp3) var(--sp4);}
+.pub-rv{font-size:var(--text-sm);font-weight:800;color:var(--ac);font-family:var(--font-mono);}
+.pub-rl{font-size:var(--text-xs);color:var(--txf);margin-top:1px;}
+.contact-wrap{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp8);align-items:stretch;}
+.contact-hero{padding:var(--sp8);background:var(--surf);border:1px solid rgba(60,200,220,.18);border-radius:var(--r-2xl);position:relative;overflow:hidden;display:flex;flex-direction:column;}
+.contact-hero::before{content:"";position:absolute;bottom:-60px;right:-60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,var(--acg),transparent 65%);}
+.ch-cttitle{font-size:var(--text-lg);font-weight:900;margin-bottom:var(--sp3);}
+.ch-sub{font-size:var(--text-sm);color:var(--txm);line-height:1.7;margin-bottom:var(--sp6);max-width:420px;}
+.contact-links{display:flex;flex-direction:column;gap:var(--sp3);flex:1;}
+.clink{display:flex;align-items:center;gap:var(--sp4);padding:var(--sp4) var(--sp5);background:var(--surf2);border:1px solid var(--bdr);border-radius:var(--r-xl);transition:all var(--tr);}
+.clink:hover{border-color:var(--ac);transform:translateX(4px);}
+.cl-ico{width:38px;height:38px;border-radius:var(--r-md);background:var(--acd);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cl-label{font-size:var(--text-xs);color:var(--txf);}
+.cl-val{font-size:var(--text-sm);font-weight:700;}
+.seek-block{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r-2xl);padding:var(--sp8);display:flex;flex-direction:column;}
+
+
+.seek-title{font-size:var(--text-base);font-weight:800;margin-bottom:var(--sp3);}
+.seek-list{display:flex;flex-direction:column;gap:0;flex:1;}
+.seek-item{display:flex;gap:var(--sp3);align-items:flex-start;flex:1;padding:var(--sp4) 0;border-bottom:1px solid var(--bdr);}
+.seek-item:last-child{border-bottom:none;}
+.seek-ico{width:36px;height:36px;border-radius:99px;background:var(--acg);border:1px solid rgba(60,200,220,.15);display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0;margin-top:2px;}
+.seek-head{font-size:var(--text-sm);font-weight:800;color:var(--tx);margin-bottom:3px;}
+.seek-text{font-size:var(--text-sm);color:var(--txm);line-height:1.55;}
+footer{padding:var(--sp8);border-top:1px solid var(--bdr);text-align:center;}
+footer p{font-size:var(--text-xs);color:var(--txf);}
+footer b{color:var(--ac);}
+.rv{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease;}
+.rv.vis{opacity:1;transform:none;}
+@media(max-width:900px){
+  .hgrid,.pgrid,.ch-grid,.sk-wrap,.edu-grid,.contact-wrap{grid-template-columns:1fr;}
+  .not-grid{grid-template-columns:1fr 1fr;}
+  .olymp-grid{grid-template-columns:1fr 1fr;}
+  .pub-rows{grid-template-columns:1fr;}
+  .f-intro{grid-template-columns:1fr;}
+  .stats-bento{grid-template-columns:repeat(3,1fr);}
+}
+@media(max-width:768px){
+  .nav{padding:0 var(--sp4);}
+  .nav-links{display:none;}
+  .sec,.hero{padding-inline:var(--sp4);}
+  .stats-bento{grid-template-columns:1fr 1fr;}
+  .olymp-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<div id="npb"></div>
+<nav class="nav">
+  <div class="nav-logo" onclick="scrollTo({top:0,behavior:'smooth'})">
+    <div class="logo-box">EK</div>Карпов Егор
+  </div>
+  <div class="nav-links">
+    <a href="#exp">Опыт</a><a href="#hack">Хакатоны</a>
+    <a href="#proj">Проекты</a><a href="#skills">Навыки</a>
+    <a href="#edu">Образование</a><a href="#contact">Контакты</a>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <button class="ico-btn" id="tt" aria-label="тема">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <a href="#contact" class="cta-nav">Контакты</a>
+  </div>
+</nav>
+
+<section class="hero" id="top">
+  <div class="hero-bg">
+    <div class="bg-dots"></div>
+    <div class="hero-glow1"></div><div class="hero-glow2"></div>
+  </div>
+  <div class="hero-c">
+    <div class="hero-eyebrow">
+      <div class="h-dot"></div>
+      <span class="h-ey">Открыт к предложениям</span>
+    </div>
+    <h1 class="hero-name">
+      <span class="hn-1">Карпов</span>
+      <span class="hn-2">Егор</span>
+    </h1>
+    <p class="hero-role">Продуктовый аналитик / Аналитик данных</p>
+    <div class="hero-meta">
+      <div class="hm">📍 <span class="hm-val">Москва</span></div>
+      <div class="hm">🎂 <span class="hm-val">21 год</span></div>
+    </div>
+    <div class="stats-bento" id="hstats">
+      <div class="sbc"><div class="sbc-icon">🗂</div><div class="sbc-num"><span id="c1">0</span><span class="plus">+</span></div><div class="sbc-label">проектов</div></div>
+      <div class="sbc"><div class="sbc-icon">⚡</div><div class="sbc-num"><span id="c2">0</span></div><div class="sbc-label">хакатона</div></div>
+      <div class="sbc"><div class="sbc-icon">📚</div><div class="sbc-num"><span id="c3">0</span></div><div class="sbc-label">курсов</div></div>
+      <div class="sbc"><div class="sbc-icon">📝</div><div class="sbc-num"><span id="c4">0</span></div><div class="sbc-label">публикации</div></div>
+      <div class="sbc"><div class="sbc-icon">🏅</div><div class="sbc-num"><span id="c5">0</span></div><div class="sbc-label">олимпиады</div></div>
+    </div>
+    <div class="hero-btns">
+      <a href="#exp" class="btn-prim">Смотреть опыт</a>
+      <a href="#contact" class="btn-sec">Контакты</a>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="exp"><div class="wrap">
+  <div class="sec-ey rv">Опыт работы</div>
+  <h2 class="sec-title rv">Где я <em>работал</em></h2>
+  <div class="rv">
+    <div class="wcard" id="wcard0">
+      <div class="wcard-head" onclick="tw('wcard0')">
+        <div class="wco-logo alfa">🏦</div>
+        <div>
+          <div class="wco-title">Аналитик данных</div>
+          <div class="wco-meta">
+            <span class="wco-co">АО «Альфа-Банк» · Дирекция развития и обслуживания клиентов ММБ</span>
+            <span class="wco-period">2026</span>
+            <span class="wco-loc">📍 Москва</span>
+          </div>
+        </div>
+        <div class="wtoggle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+      </div>
+      <div class="wcard-body"><div class="wsep"></div>
+        <div class="wtasks">
+          <div class="wtask"><div class="wdot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div><p><strong>Разработка и проработка идей</strong> для повышения эффективности сети: поиск нестандартных решений для улучшения бизнес-показателей.</p></div>
+          <div class="wtask"><div class="wdot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div><p><strong>Пилотирование инициатив:</strong> планирование, запуск и оценка эффективности проектов, внедрение успешных практик в масштаб сети.</p></div>
+          <div class="wtask"><div class="wdot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div><p><strong>Анализ данных продаж и результатов пилотов</strong> — выявление факторов, влияющих на выручку, трафик, конверсию и вовлечённость клиентов.</p></div>
+          <div class="wtask"><div class="wdot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div><p><strong>Аналитические записки с рекомендациями</strong> для руководства: факторные и сравнительные анализы по итогам пилотных проектов.</p></div>
+          <div class="wtask"><div class="wdot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div><p><strong>Поиск инсайтов и закономерностей</strong> в данных — интерпретация и превращение в конкретные рекомендации для команды.</p></div>
+        </div>
+        <div class="wbadges"><span class="wbadge">SQL</span><span class="wbadge">Excel</span><span class="wbadge">Power BI</span><span class="wbadge">Факторный анализ</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="rv">
+    <div class="wcard" id="wcard1">
+      <div class="wcard-head" onclick="tw('wcard1')">
+        <div class="wco-logo river">⚓</div>
+        <div>
+          <div class="wco-title">Официант (сервис на борту)</div>
+          <div class="wco-meta">
+            <span class="wco-co">rivertickets.ru</span>
+            <span class="wco-period">3 года 5 месяцев</span>
+            <span class="wco-loc">📍 Москва</span>
+          </div>
+        </div>
+        <div class="wtoggle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+      </div>
+      <div class="wcard-body"><div class="wsep"></div>
+        <div class="wtasks">
+          <div class="wtask"><div class="wdot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div><p>Работал в условиях <strong>повышенной нагрузки и жёстких таймингов</strong> — обслуживание большого потока гостей по расписанию рейсов без права на задержку.</p></div>
+          <div class="wtask"><div class="wdot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div><p>Одновременно держал в голове заказы, особенности гостей и последовательность подачи — <strong>живая многозадачность и управление очередью задач.</strong></p></div>
+          <div class="wtask"><div class="wdot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div><p>Предложил <strong>более удобную схему подачи для команды</strong> — снижало время ожидания гостей и убирало дублирующие шаги.</p></div>
+        </div>
+        <div class="wbadges"><span class="wbadge">Многозадачность</span><span class="wbadge">Тайм-менеджмент</span><span class="wbadge">Стандарты качества</span></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+<hr class="sep">
+
+<section class="sec" id="hack"><div class="wrap">
+  <div class="sec-ey rv">Хакатоны</div>
+  <h2 class="sec-title rv">Соревновательный <em>опыт</em></h2>
+  <div class="hgrid">
+    <div class="hcard rv">
+      <div class="hcard-top"><div class="hico">🏦</div><span class="badge-tag bt-gold">Top Result</span></div>
+      <div class="hco">ALFA-BANK · Alfa Hack</div>
+      <div class="htitle">RAG-система для поиска по бизнес-документам банка</div>
+      <div class="hdesc">Мульти-модельная интеллектуальная поисковая система с гибридным retrieval (dense + sparse embeddings) и продвинутым ранжированием. Устойчива к некорректным запросам.</div>
+      <div class="himpact">
+        <div class="himpact-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+        <div class="himpact-text">Поиск по тысячам документов — <strong>секунды вместо часов.</strong> Вошёл в число лучших решений платформы.</div>
+      </div>
+      <div class="hmetrics">
+        <div class="hmet"><div class="hmv">Hybrid</div><div class="hmk">Dense + Sparse</div></div>
+        <div class="hmet"><div class="hmv">Multi-model</div><div class="hmk">Retrieval</div></div>
+        <div class="hmet"><div class="hmv">Top</div><div class="hmk">Результат</div></div>
+      </div>
+    </div>
+    <div class="hcard rv">
+      <div class="hcard-top"><div class="hico">🎬</div><span class="badge-tag bt-green">95% Accuracy</span></div>
+      <div class="hco">WINK · AI Challenge</div>
+      <div class="htitle">Автоматическая возрастная модерация видеоконтента</div>
+      <div class="hdesc">Сервис анализирует сценарии видео и присваивает возрастной рейтинг (0+/6+/12+/16+/18+). Генерирует структурированные PDF-отчёты.</div>
+      <div class="himpact">
+        <div class="himpact-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+        <div class="himpact-text"><strong>30 мин → 5 мин</strong> время модерации, точность классификации <strong>95%.</strong> Экономия ручного труда в 6 раз.</div>
+      </div>
+      <div class="hmetrics">
+        <div class="hmet"><div class="hmv">95%</div><div class="hmk">Точность</div></div>
+        <div class="hmet"><div class="hmv">6×</div><div class="hmk">Быстрее</div></div>
+        <div class="hmet"><div class="hmv">PDF</div><div class="hmk">Авто-отчёты</div></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+<hr class="sep">
+
+<section class="sec" id="proj"><div class="wrap">
+  <div class="sec-ey rv">Проекты</div>
+  <h2 class="sec-title rv">Работы и <em>разработки</em></h2>
+  <div class="tabs-row rv">
+    <button class="tb on" onclick="tab('done',this)">Учебные проекты</button>
+    <button class="tb" onclick="tab('flag',this)">Дипломная работа</button>
+    <button class="tb" onclick="tab('other',this)">Публикации</button>
+  </div>
+
+  <div class="tp on" id="tp-done">
+    <div class="pgrid">
+      <div class="pcard rv">
+        <div class="pcard-top"><div class="pico">⚡</div><div class="ptag-sm">Risk Management · ИТ-проект</div></div>
+        <div class="pt">Misys FusionRisk — внедрение в Альфа-Банк</div>
+        <div class="pd">Полный комплект ПМ-документации: WBS, RACI, PERT/CPM, смета, план рисков, мониторинг методом освоенного объёма, матрицы стейкхолдеров по трём моделям (Джонсон, Митчелл-Вуд, Поддержка-Сила).</div>
+        <div class="p-impact">
+          <div class="p-impact-label">Результат</div>
+          <div class="p-impact-text">Ресурсное выравнивание в MS Project <strong>сократило срок на 2+ недели</strong> без изменения бюджета. Система обрабатывает <strong>1 млн+ транзакций/месяц</strong> за ≤10 мин при ошибках &lt;3%.</div>
+        </div>
+        <div class="kpis"><span class="kp">Команда <strong>51 чел.</strong></span><span class="kp">Бюджет <strong>43 млн ₽</strong></span><span class="kp">MS Project</span><span class="kp">BPMN · BizAgi</span><span class="kp">WBS · RACI · PERT</span></div>
+      </div>
+      <div class="pcard rv">
+        <div class="pcard-top"><div class="pico">🔷</div><div class="ptag-sm">UML · Информационные системы</div></div>
+        <div class="pt">A2B — UML-архитектура B2B-платформы</div>
+        <div class="pd">Полная UML-модель по методологии RUP: диаграммы бизнес-прецедентов, системных прецедентов, классов, последовательности и деятельности. Требования по FURPS+.</div>
+        <div class="p-impact">
+          <div class="p-impact-label">Результат</div>
+          <div class="p-impact-text">Система спроектирована под <strong>20 000+ пользователей</strong> с откликом <strong>≤1 секунды.</strong> Закрыто <strong>27 задокументированных требований</strong> по функциональности, производительности и безопасности.</div>
+        </div>
+        <div class="kpis"><span class="kp">5 типов UML-диаграмм</span><span class="kp">StarUML · RUP</span><span class="kp">FURPS+</span><span class="kp">20 000+ пользователей</span></div>
+      </div>
+      <div class="pcard rv">
+        <div class="pcard-top"><div class="pico">🛡</div><div class="ptag-sm">Бизнес-процессы · Моделирование</div></div>
+        <div class="pt">Kaspersky Lab — анализ бизнес-процессов</div>
+        <div class="pd">Полный цикл: карта процессов по Портеру, EPC-модель в ARIS Express, BPMN 2.0 в BizAgi, SIPOC-анализ для выявления поставщиков и контрольных точек.</div>
+        <div class="p-impact">
+          <div class="p-impact-label">Результат</div>
+          <div class="p-impact-text">Выявлены <strong>конкретные узкие места по времени цикла.</strong> Предложены рекомендации по устранению дублирующих шагов и сокращению времени обработки.</div>
+        </div>
+        <div class="kpis"><span class="kp">ARIS Express</span><span class="kp">BizAgi</span><span class="kp">SIPOC</span><span class="kp">Портер</span></div>
+      </div>
+      <div class="pcard rv">
+        <div class="pcard-top"><div class="pico">🧠</div><div class="ptag-sm">Бизнес-план · AI SaaS · HR Tech</div></div>
+        <div class="pt">MindFlow — AI Mental Health SaaS</div>
+        <div class="pd">Полный бизнес-план B2B AI-платформы мониторинга ментального здоровья: маркетинг, SWOT+PEST, unit-экономика, оргструктура, финмодель на 3 года. Интеграции SAP, Oracle HCM, 1С, MS Teams.</div>
+        <div class="p-impact">
+          <div class="p-impact-label">Бизнес-кейс</div>
+          <div class="p-impact-text">ROI <strong>300–450%</strong> за 3 года. Прогноз снижения текучести кадров <strong>−25–30%.</strong> HR получает аналитику в реальном времени без кастомной разработки.</div>
+        </div>
+        <div class="kpis"><span class="kp">LLM + NLP + Biometrics</span><span class="kp">ROI <strong>300–450%</strong></span><span class="kp">SWOT · PEST</span><span class="kp">Unit-экономика</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tp" id="tp-flag">
+    <div class="fcard rv">
+      <div class="f-hd">
+        <div class="live-pill"><span class="ldot"></span>Дипломная работа · 2026</div>
+        <div style="font-size:var(--text-xs);color:var(--txf);font-family:var(--font-mono);">Финансовый университет</div>
+      </div>
+      <div class="f-title">Интеграция технологий речевой аналитики в процессы мониторинга обслуживания клиентов малого и микробизнеса в крупном коммерческом банке</div>
+      <div class="f-intro">
+        <div><div class="f-il">Партнёр</div><div class="f-iv">VOCA TECH</div></div>
+        <div><div class="f-il">Объект</div><div class="f-iv">Альфа-Банк</div></div>
+        <div><div class="f-il">Статус</div><div class="f-iv">Пилот запущен · январь 2026</div></div>
+      </div>
+      <div class="f-sub">Работа охватывает полный контур проекта: исследование рынка речевой аналитики, анализ внутренней среды банка, моделирование текущих и целевых процессов, подготовку и анализ данных, а также оценку экономической эффективности внедрения.</div>
+      <div class="ch-grid">
+        <div class="ch"><div class="ch-n">Глава 1</div><div class="ch-t">Исследование рынка и корпоративного опыта</div><ul class="ch-list"><li>Обзор рынка решений в области речевой аналитики</li><li>Анализ кейсов применения технологий речевой аналитики в клиентском обслуживании</li><li>Разработка концептуальной системной архитектуры релевантного класса ИТ-решений</li></ul></div>
+        <div class="ch"><div class="ch-n">Глава 2</div><div class="ch-t">Анализ внутренней среды банка</div><ul class="ch-list"><li>Характеристика банка, мотивационная модель и стратегический контур</li><li>Бизнес-архитектура, текущие BPMN-процессы и ИТ-ландшафт</li><li>Логическая модель данных и требования к ИТ-решению</li></ul></div>
+        <div class="ch"><div class="ch-n">Глава 3</div><div class="ch-t">Проектирование решения и оценка эффекта</div><ul class="ch-list"><li>Планирование проекта совершенствования процессов на базе речевой аналитики</li><li>Очистка, трансформация и исследовательский анализ данных</li><li>Целевые процессы, целевая архитектура и экономическая эффективность проекта</li></ul></div>
+      </div>
+      <div class="f-tags"><span class="f-tag">VOCA TECH</span><span class="f-tag">Archi · BizAgi</span><span class="f-tag">Python · CRISP-DM</span><span class="f-tag">NPV · IRR · ROI</span><span class="f-tag">TOGAF · FURPS+</span></div>
+    </div>
+  </div>
+
+  <div class="tp" id="tp-other">
+    <div class="pub-grid">
+      <div class="pubcard rv">
+        <div class="pub-top">
+          <div style="flex:1"><div class="pub-badges" style="margin-bottom:var(--sp3)"><span class="badge-tag bt-green">2025</span><span class="badge-tag" style="background:var(--surf2);color:var(--txm);border:1px solid var(--bdr);">Журнал РИНЦ</span></div><div class="pub-title">Применение ИИ для оптимизации умных зон отдыха и профилактики выгорания на рабочем месте</div></div>
+          <div class="pub-ico rinc">🤖</div>
+        </div>
+        <div class="pub-rows">
+          <div><div class="pub-bl">Проблема</div><div class="pub-bt">60% российских офисных сотрудников испытывают признаки выгорания. Стандартные зоны отдыха не учитывают индивидуальное психоэмоциональное состояние.</div></div>
+          <div><div class="pub-bl">Решение (САИЗО)</div><div class="pub-bt">IoT-датчики (ЧСС, АД, вариабельность пульса) — <b>Random Forest</b> классифицирует уровень стресса — среда автоматически адаптируется (музыка, свет). Для работодателя это сценарий снижения выгорания и больничных за счёт персонализированной среды.</div></div>
+        </div>
+        <div class="pub-results"><div class="pub-res"><div class="pub-rv">82–87%</div><div class="pub-rl">Точность RF</div></div><div class="pub-res"><div class="pub-rv">−18–25%</div><div class="pub-rl">Снижение выгорания</div></div><div class="pub-res"><div class="pub-rv">IoT + ML</div><div class="pub-rl">Стек</div></div><div class="pub-res"><div class="pub-rv">4 сценария</div><div class="pub-rl">Адаптации среды</div></div></div>
+      </div>
+      <div class="pubcard rv">
+        <div class="pub-top">
+          <div style="flex:1"><div class="pub-badges" style="margin-bottom:var(--sp3)"><span class="badge-tag bt-vak">ВАК · Инновации и инвестиции · 2026</span><span class="badge-tag" style="background:var(--surf2);color:var(--txm);border:1px solid var(--bdr);">В печати</span></div><div class="pub-title">Исследование "пересечения" LegalTech и электронного правительства: совершенствование государственного управления</div></div>
+          <div class="pub-ico intl">🌍</div>
+        </div>
+        <div class="pub-rows">
+          <div><div class="pub-bl">О чём</div><div class="pub-bt">Синергия LegalTech (AI, RPA, блокчейн) и e-Gov. Анализ <b>193 государств ООН</b> по индексу EGDI — от Европы до Африки.</div></div>
+          <div><div class="pub-bl">Авторский вклад</div><div class="pub-bt">Разработана <b>4-слойная модель государственной цифровой платформы</b>: базовый слой — NLP — LegalTech-модули — RegTech. SWOT российской цифровизации с акцентом на то, где технология реально сокращает сроки и издержки государственного управления.</div></div>
+        </div>
+        <div class="pub-results"><div class="pub-res"><div class="pub-rv">193</div><div class="pub-rl">страны · EGDI</div></div><div class="pub-res"><div class="pub-rv">4 слоя</div><div class="pub-rl">Модель платформы</div></div><div class="pub-res"><div class="pub-rv">87%</div><div class="pub-rl">Прогноз суд. решений</div></div><div class="pub-res"><div class="pub-rv">−30%</div><div class="pub-rl">Срок дел</div></div></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+<hr class="sep">
+
+<section class="sec" id="skills"><div class="wrap">
+  <div class="sec-ey rv">Компетенции</div>
+  <h2 class="sec-title rv">Технический <em>стек</em></h2>
+  <div class="sk-wrap">
+    <div>
+      <div class="sk-g rv"><div class="sk-gt">Данные · ML · Языки</div><div class="sk-tags"><span class="sk-tag">SQL · PostgreSQL</span><span class="sk-tag">Python</span><span class="sk-tag">pandas · numpy</span><span class="sk-tag">seaborn · matplotlib</span><span class="sk-tag">scikit-learn</span><span class="sk-tag">PyTorch · Transformers</span><span class="sk-tag">Embeddings · RAG · LLM</span><span class="sk-tag">A/B-тесты · статистика</span><span class="sk-tag">Excel · VBA</span></div></div>
+      <div class="sk-g rv"><div class="sk-gt">Визуализация · BI</div><div class="sk-tags"><span class="sk-tag">Power BI</span><span class="sk-tag">Yandex DataLens</span><span class="sk-tag">Tableau</span><span class="sk-tag">Jupyter Notebook</span></div></div>
+      <div class="sk-g rv"><div class="sk-gt">Инфраструктура</div><div class="sk-tags"><span class="sk-tag">Docker</span><span class="sk-tag">FastAPI</span><span class="sk-tag">Git</span><span class="sk-tag">1С · SharePoint</span><span class="sk-tag">Trello · TestRail</span></div></div>
+    </div>
+    <div>
+      <div class="sk-g rv"><div class="sk-gt">Управление проектами · Финансы</div><div class="sk-tags"><span class="sk-tag">WBS · RACI</span><span class="sk-tag">MS Project</span><span class="sk-tag">PERT · CPM</span><span class="sk-tag">Монте-Карло</span><span class="sk-tag">NPV · IRR · DPP</span><span class="sk-tag">SWOT · PEST</span><span class="sk-tag">Agile · Scrum</span></div></div>
+      <div class="sk-g rv"><div class="sk-gt">Архитектурные фреймворки</div><div class="sk-tags"><span class="sk-tag">TOGAF</span><span class="sk-tag">FURPS+</span><span class="sk-tag">CRISP-DM</span><span class="sk-tag">SIPOC</span><span class="sk-tag">RUP</span></div></div>
+      <div class="sk-g rv"><div class="sk-gt">Инструменты моделирования</div><div class="sk-tags"><span class="sk-tag">BizAgi</span><span class="sk-tag">Archi</span><span class="sk-tag">StarUML</span><span class="sk-tag">ARIS Express</span><span class="sk-tag">MS Visio</span><span class="sk-tag">Draw.io</span></div></div>
+    </div>
+  </div></div></section>
+<hr class="sep">
+
+<section class="sec" id="edu"><div class="wrap">
+  <div class="sec-ey rv">Образование</div>
+  <h2 class="sec-title rv">Учёба и <em>достижения</em></h2>
+  <div class="edu-grid">
+    <div>
+      <div class="edu-main rv">
+        <div class="edu-uni">Финансовый университет при Правительстве РФ · Москва</div>
+        <div class="edu-name">Бакалавриат «Бизнес-информатика»</div>
+        <div class="edu-spec">2022–2026</div>
+        <div class="edu-row"><span class="ep ep-green">3 курс — с отличием</span></div>
+      </div>
+      <div class="cert-card rv">
+        <div class="cert-ico">🏅</div>
+        <div><div class="cert-title">Агент банка 3 разряда</div><div class="cert-desc">Сертификат — Московский колледж бизнес-технологий, 120 ч. Подтверждён аттестационной комиссией.</div></div>
+      </div>
+      <div class="rv" style="margin-top:var(--sp5)">
+        <div style="font-size:var(--text-xs);color:var(--ac);font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.08em;margin-bottom:var(--sp3)">3 олимпиады «Я — профессионал» 2025/2026</div>
+        <div class="olymp-grid">
+          <div class="olymp"><div class="olymp-ico">💡</div><div class="olymp-prog">Бизнес-информатика</div><div class="olymp-name">Бизнес-процессы и цифровая трансформация</div><div class="olymp-res">Высокий результат</div></div>
+          <div class="olymp"><div class="olymp-ico">💻</div><div class="olymp-prog">Программирование</div><div class="olymp-name">Алгоритмы и сложные ИТ-задачи</div><div class="olymp-res">Высокий результат</div></div>
+          <div class="olymp"><div class="olymp-ico">🤖</div><div class="olymp-prog">Искусственный интеллект</div><div class="olymp-name">Анализ данных и методы ML</div><div class="olymp-res">Высокий результат</div></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:var(--text-xs);color:var(--ac);font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.08em;margin-bottom:var(--sp4)" class="rv">9 пройденных курсов</div>
+      <div class="courses-list">
+        <div class="crs rv"><div class="crs-ico">📊</div><div><div class="crs-name">Аналитика данных</div><div class="crs-src">Академия Data-Diving</div></div><div class="crs-yr">2025</div></div>
+        <div class="crs rv"><div class="crs-ico">🐍</div><div><div class="crs-name">Курс по Python</div><div class="crs-src">Simulative</div></div><div class="crs-yr">2025</div></div>
+        <div class="crs rv"><div class="crs-ico">🐼</div><div><div class="crs-name">Курс по pandas</div><div class="crs-src">Simulative</div></div><div class="crs-yr">2025</div></div>
+        <div class="crs rv"><div class="crs-ico">🔬</div><div><div class="crs-name">Основы статистики и A/B-тестирования</div><div class="crs-src">Яндекс Практикум</div></div><div class="crs-yr">2025</div></div>
+        <div class="crs rv"><div class="crs-ico">📈</div><div><div class="crs-name">Основы статистики</div><div class="crs-src">karpov.courses</div></div><div class="crs-yr">2025</div></div>
+        <div class="crs rv"><div class="crs-ico">🗄</div><div><div class="crs-name">Симулятор SQL</div><div class="crs-src">karpov.courses</div></div><div class="crs-yr">2025</div></div>
+        <div class="crs rv"><div class="crs-ico">💾</div><div><div class="crs-name">Основы работы с БД и SQL</div><div class="crs-src">Яндекс Практикум</div></div><div class="crs-yr">2024</div></div>
+        <div class="crs rv"><div class="crs-ico">🧮</div><div><div class="crs-name">Комбинаторика для начинающих</div><div class="crs-src">А.М. Райгородский · Stepik</div></div><div class="crs-yr">2024</div></div>
+        <div class="crs rv"><div class="crs-ico">⚡</div><div><div class="crs-name">Интерактивный курс по SQL</div><div class="crs-src">SQL Academy</div></div><div class="crs-yr">2024</div></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+<hr class="sep">
+
+<section class="sec" id="contact"><div class="wrap">
+  <div class="sec-ey rv">Контакты</div>
+  <h2 class="sec-title rv">Давайте <em>познакомимся</em></h2>
+  <div class="contact-wrap">
+    <div class="contact-hero rv">
+      <div class="ch-cttitle">Открыт к предложениям</div>
+      <div class="ch-sub">Продуктовый аналитик / Аналитик данных · 21 год · Москва. Ищу команду, где данные реально меняют продукт и где есть сильные люди, у которых можно учиться.</div>
+      <div class="contact-links">
+        <div class="clink"><div class="cl-ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></div><div><div class="cl-label">Email</div><div class="cl-val">ekarpov9@mail.ru</div></div></div>
+        <div class="clink"><div class="cl-ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6 6l1.27-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div><div class="cl-label">Телефон</div><div class="cl-val">+7 901 797-9170</div></div></div>
+        <div class="clink"><div class="cl-ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-2.04 9.604c-.151.673-.553.838-1.12.52l-3.1-2.285-1.494 1.437c-.166.165-.305.305-.625.305l.223-3.164 5.74-5.185c.25-.223-.054-.347-.389-.124L7.31 14.11l-3.027-.945c-.657-.207-.672-.657.137-.974l11.833-4.564c.547-.2 1.027.135.859.968z"/></svg></div><div><div class="cl-label">Telegram</div><div class="cl-val">@karpoves</div></div></div>
+      </div>
+    </div>
+    <div class="seek-block rv">
+      <div class="seek-title">Что ищу в команде</div>
+      <div class="seek-list">
+        <div class="seek-item"><div class="seek-ico">📊</div><div><div class="seek-head">Данные влияют на продукт</div><div class="seek-text">Метрики, гипотезы, реальные решения — не просто красивые дашборды</div></div></div>
+        <div class="seek-item"><div class="seek-ico">🚀</div><div><div class="seek-head">Сильные люди рядом</div><div class="seek-text">Команда, у которой можно учиться и расти каждый день</div></div></div>
+        <div class="seek-item"><div class="seek-ico">💡</div><div><div class="seek-head">Идеи приветствуются</div><div class="seek-text">И превращаются в фичу, а не в задокументированный отказ</div></div></div>
+        <div class="seek-item"><div class="seek-ico">📈</div><div><div class="seek-head">Вижу результат своей работы</div><div class="seek-text">Конкретные цифры: выручка, конверсия, retention</div></div></div>
+        <div class="seek-item"><div class="seek-ico">🌱</div><div><div class="seek-head">Обратная связь и рост</div><div class="seek-text">Среда, где аналитики быстро прогрессируют и получают честный фидбэк</div></div></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<footer><p>2026 · <b>Карпов Егор</b> · Продуктовый аналитик / Аналитик данных · Москва</p></footer>
+
+<script>
+window.addEventListener('scroll',function(){var e=document.getElementById('npb');e.style.width=Math.min((window.scrollY/(document.body.scrollHeight-window.innerHeight))*100,100)+'%';});
+(function(){var b=document.getElementById("tt"),h=document.documentElement,t="dark";function s(v){t=v;h.setAttribute("data-theme",v);b.innerHTML=v==="dark"?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>':'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';}s(t);b.addEventListener("click",function(){s(t==="dark"?"light":"dark");});})();
+function tw(id){document.getElementById(id).classList.toggle("open");}
+function tab(id,el){document.querySelectorAll(".tp").forEach(function(p){p.classList.remove("on");});document.querySelectorAll(".tb").forEach(function(b){b.classList.remove("on");});document.getElementById("tp-"+id).classList.add("on");el.classList.add("on");}
+function cu(id,t,d){var e=document.getElementById(id),c=0,s=t/(d/16);var i=setInterval(function(){c=Math.min(c+s,t);e.textContent=Math.floor(c);if(c>=t)clearInterval(i);},16);}
+var counted=false;
+function sc(){if(counted)return;counted=true;cu("c1",6,900);cu("c2",2,600);cu("c3",9,1100);cu("c4",2,700);cu("c5",3,800);}
+var ro=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add("vis");});},{threshold:0.07});
+document.querySelectorAll(".rv").forEach(function(el){ro.observe(el);});
+var hr2=new IntersectionObserver(function(es){if(es[0].isIntersecting)sc();},{threshold:0.5});
+hr2.observe(document.getElementById("hstats"));
+var secs=document.querySelectorAll("section[id]");
+var nls=document.querySelectorAll(".nav-links a");
+var nr=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){nls.forEach(function(l){l.classList.remove("act");});var a=document.querySelector('.nav-links a[href="#'+e.target.id+'"]');if(a)a.classList.add("act");}});},{threshold:0.35});
+secs.forEach(function(s){nr.observe(s);});
+
+</script>
+</body>
+</html>
